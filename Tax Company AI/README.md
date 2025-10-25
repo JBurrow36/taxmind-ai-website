@@ -1,4 +1,4 @@
-# TaxMind AI Website
+# TaxMind AI Website 
 
 A modern, responsive website for TaxMind AI - an innovative fintech startup that leverages artificial intelligence to simplify and automate tax filing for individuals and businesses.
 
@@ -51,7 +51,7 @@ taxmind-ai-website/
 
 3. **For development with live reload**
    ```bash
-   npm install
+   npm install 
    npm run dev
    ```
 
@@ -217,3 +217,4 @@ For support or questions about the TaxMind AI website:
 ---
 
 **TaxMind AI** - Transforming tax season through intelligent automation and AI-powered solutions.
+

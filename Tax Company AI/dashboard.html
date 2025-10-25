@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TaxMind AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .dashboard {
+            min-height: 100vh;
+            background: #f8fafc;
+            padding-top: 80px;
+        }
+        
+        .dashboard-header {
+            background: white;
+            padding: 2rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            gap: 4rem;
+        }
+        
+        .dashboard-logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        
+        .dashboard-logo i {
+            margin-right: 0.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .user-details h4 {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #1e293b;
+        }
+        
+        .user-details p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        
+        .logout-btn {
+            background: transparent;
+            border: 1px solid #e5e7eb;
+            color: #64748b;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+        
+        .dashboard-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .nav-tab {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .nav-tab:hover {
+            background: #f0f9ff;
+            border-color: #2563eb;
+            color: #2563eb;
+            transform: translateY(-2px);
+        }
+        
+        .nav-tab i {
+            font-size: 1.2rem;
+        }
+        
+        .welcome-section {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+        }
+        
+        .welcome-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .welcome-text h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .welcome-text p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .ai-status {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .ai-status h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .ai-status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .card-action {
+            background: #f1f5f9;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            color: #2563eb;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .card-action:hover {
+            background: #e2e8f0;
+        }
+        
+        .ai-process-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .process-step {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .process-step.active {
+            background: #f0f9ff;
+            border: 2px solid #2563eb;
+        }
+        
+        .process-step.completed {
+            background: #f0fdf4;
+            border: 2px solid #10b981;
+        }
+        
+        .process-step.pending {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            background: #e5e7eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-size: 1.2rem;
+            color: #64748b;
+        }
+        
+        .process-step.active .step-icon {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .process-step.completed .step-icon {
+            background: #10b981;
+            color: white;
+        }
+        
+        .step-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .ai-insights {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .insight-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .insight-item:last-child {
+            border-bottom: none;
+        }
+        
+        .insight-icon {
+            width: 32px;
+            height: 32px;
+            background: #dbeafe;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 0.9rem;
+        }
+        
+        .insight-text {
+            flex: 1;
+        }
+        
+        .insight-title {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 0.9rem;
+        }
+        
+        .insight-desc {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .stat-card {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .action-btn {
+            background: white;
+            border: 2px solid #e5e7eb;
+            padding: 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #374151;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .action-btn:hover {
+            border-color: #2563eb;
+            background: #f0f9ff;
+        }
+        
+        .action-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #2563eb;
+        }
+        
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .action-desc {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        
+        .recent-activity {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 0.9rem;
+        }
+        
+        .activity-time {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+        
+        .subscription-status-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+        }
+        
+        .subscription-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .subscription-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .subscription-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .subscription-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .plan-info h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2563eb;
+            margin-bottom: 0.25rem;
+        }
+        
+        .plan-info p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        .trial-info {
+            text-align: right;
+        }
+        
+        .trial-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: #10b981;
+            font-weight: 600;
+        }
+        
+        .trial-countdown {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .payment-info {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .payment-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #92400e;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .payment-info p {
+            color: #92400e;
+            margin-bottom: 1rem;
+        }
+        
+        .venmo-payment {
+            background: #3d95ce;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .venmo-payment p {
+            margin: 0 0 0.5rem 0;
+            color: white;
+        }
+        
+        .venmo-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            color: #3d95ce;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .venmo-link:hover {
+            background: #f0f9ff;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .process-steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tab {
+                flex: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="dashboard-nav">
+            <div class="dashboard-logo">
+                <i class="fas fa-brain"></i>
+                <span>TaxMind AI</span>
+            </div>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">JD</div>
+                    <div class="user-details">
+                        <h4 id="userName">John Doe</h4>
+                        <p id="userEmail">john@example.com</p>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard">
+        <div class="dashboard-content">
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <a href="upload-documents.html" class="nav-tab">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Upload</span>
+                </a>
+                <a href="ai-analysis.html" class="nav-tab">
+                    <i class="fas fa-robot"></i>
+                    <span>Analysis</span>
+                </a>
+                <a href="view-report.html" class="nav-tab">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Report</span>
+                </a>
+                <a href="file-taxes.html" class="nav-tab">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>File</span>
+                </a>
+            </div>
+
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <div class="welcome-content">
+                    <div class="welcome-text">
+                        <h2 id="welcomeMessage">Welcome back, John!</h2>
+                        <p>Your AI tax assistant is ready to help you maximize your deductions and streamline your filing process.</p>
+                    </div>
+                    <div class="ai-status">
+                        <h3>AI Assistant Status</h3>
+                        <div class="ai-status-indicator">
+                            <div class="status-dot"></div>
+                            <span>Active & Ready</span>
+                        </div>
+                        <p>All systems operational</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscription Status -->
+            <div class="subscription-status-card" id="subscriptionStatusCard" style="display: none;">
+                <div class="subscription-header">
+                    <h3><i class="fas fa-credit-card"></i> Subscription Status</h3>
+                </div>
+                <div class="subscription-content">
+                    <div class="subscription-info">
+                        <div class="plan-info">
+                            <h4 id="currentPlan">Small Business Plan</h4>
+                            <p id="planDescription">For 100 employees or less</p>
+                        </div>
+                        <div class="trial-info">
+                            <div class="trial-status" id="trialStatus">
+                                <i class="fas fa-clock"></i>
+                                <span id="trialText">Trial Active</span>
+                            </div>
+                            <div class="trial-countdown" id="trialCountdown">
+                                <span id="daysRemaining">15 days remaining</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="payment-info" id="paymentInfo" style="display: none;">
+                        <div class="payment-status">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Payment Required</span>
+                        </div>
+                        <p>Your trial has ended. Complete payment to continue using TaxMind AI.</p>
+                        <div class="venmo-payment">
+                            <p><strong>Payment via Venmo:</strong> @jacksonburrow36</p>
+                            <a href="https://venmo.com/u/jacksonburrow36" target="_blank" class="venmo-link">
+                                <i class="fab fa-paypal"></i> Pay Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Main Content -->
+                <div class="main-content">
+                    <!-- AI Process Card -->
+                    <div class="ai-process-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Tax Filing Progress</h3>
+                            <button class="card-action">View Details</button>
+                        </div>
+                        <div class="process-steps">
+                            <div class="process-step completed">
+                                <div class="step-icon">
+                                    <i class="fas fa-file-upload"></i>
+                                </div>
+                                <div class="step-title">Upload Documents</div>
+                            </div>
+                            <div class="process-step completed">
+                                <div class="step-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div class="step-title">AI Analysis</div>
+                            </div>
+                            <div class="process-step active">
+                                <div class="step-icon">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <div class="step-title">Tax Calculation</div>
+                            </div>
+                            <div class="process-step pending">
+                                <div class="step-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="step-title">File & Submit</div>
+                            </div>
+                        </div>
+                        <div class="ai-insights">
+                            <h4>AI Insights & Recommendations</h4>
+                            <div class="insight-item">
+                                <div class="insight-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <div class="insight-text">
+                                    <div class="insight-title">Additional Deductions Found</div>
+                                    <div class="insight-desc">AI identified 3 potential deductions worth $2,340</div>
+                                </div>
+                            </div>
+                            <div class="insight-item">
+                                <div class="insight-icon">
+                                    <i class="fas fa-shield-check"></i>
+                                </div>
+                                <div class="insight-text">
+                                    <div class="insight-title">Compliance Check</div>
+                                    <div class="insight-desc">All calculations verified against latest IRS regulations</div>
+                                </div>
+                            </div>
+                            <div class="insight-item">
+                                <div class="insight-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="insight-text">
+                                    <div class="insight-title">Tax Optimization</div>
+                                    <div class="insight-desc">Estimated savings of $1,200 compared to standard filing</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Quick Stats</h3>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" id="documentsProcessed">12</div>
+                                <div class="stat-label">Documents Processed</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="deductionsFound">8</div>
+                                <div class="stat-label">Deductions Found</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="timeSaved">2.5h</div>
+                                <div class="stat-label">Time Saved</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="accuracyRate">99.8%</div>
+                                <div class="stat-label">Accuracy Rate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <!-- Quick Actions -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Quick Actions</h3>
+                        </div>
+                        <div class="quick-actions">
+                            <a href="upload-documents.html" class="action-btn" id="uploadDocuments">
+                                <div class="action-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="action-title">Upload Documents</div>
+                                <div class="action-desc">Add W-2s, 1099s, receipts</div>
+                            </a>
+                            <a href="ai-analysis.html" class="action-btn" id="runAnalysis">
+                                <div class="action-icon">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="action-title">Run AI Analysis</div>
+                                <div class="action-desc">Analyze for deductions</div>
+                            </a>
+                            <a href="view-report.html" class="action-btn" id="viewReport">
+                                <div class="action-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="action-title">View Report</div>
+                                <div class="action-desc">Review tax summary</div>
+                            </a>
+                            <a href="file-taxes.html" class="action-btn" id="fileTaxes">
+                                <div class="action-icon">
+                                    <i class="fas fa-paper-plane"></i>
+                                </div>
+                                <div class="action-title">File Taxes</div>
+                                <div class="action-desc">Submit to IRS</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recent Activity</h3>
+                        </div>
+                        <div class="recent-activity">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-file-upload"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">W-2 Form Uploaded</div>
+                                    <div class="activity-time">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">AI Analysis Completed</div>
+                                    <div class="activity-time">1 hour ago</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">New Deductions Found</div>
+                                    <div class="activity-time">45 minutes ago</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Tax Calculation Updated</div>
+                                    <div class="activity-time">30 minutes ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="payment-processor.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
+

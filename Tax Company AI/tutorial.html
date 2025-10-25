@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaxMind AI - Interactive Tutorial</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .tutorial-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        
+        .tutorial-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tutorial-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        
+        .tutorial-subtitle {
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+        
+        .tutorial-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .tutorial-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .tutorial-btn.primary {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+        }
+        
+        .tutorial-btn.secondary {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        
+        .tutorial-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .tutorial-step {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0.5;
+            transform: scale(0.95);
+            transition: all 0.5s ease;
+        }
+        
+        .tutorial-step.active {
+            opacity: 1;
+            transform: scale(1);
+            border: 2px solid #2563eb;
+        }
+        
+        .tutorial-step.completed {
+            opacity: 0.8;
+            border: 2px solid #10b981;
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .step-number.completed {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .step-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .step-description {
+            color: #64748b;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .demo-screenshot {
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0;
+            border: 2px dashed #cbd5e1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .demo-screenshot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        
+        .demo-placeholder {
+            text-align: center;
+            color: #64748b;
+        }
+        
+        .demo-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #94a3b8;
+        }
+        
+        .step-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .action-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #2563eb;
+            background: transparent;
+            color: #2563eb;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .action-btn:hover {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .progress-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+        
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.9rem;
+            color: #64748b;
+            text-align: center;
+        }
+        
+        .tutorial-navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            padding: 0.75rem 1rem;
+            border: none;
+            background: #e2e8f0;
+            color: #475569;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-btn:hover {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .tutorial-highlight {
+            position: relative;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+            margin: 1rem 0;
+        }
+        
+        .tutorial-highlight::before {
+            content: "💡";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: white;
+            padding: 0 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .tutorial-highlight-text {
+            color: #92400e;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .tutorial-container {
+                padding: 1rem;
+            }
+            
+            .tutorial-title {
+                font-size: 2rem;
+            }
+            
+            .tutorial-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tutorial-navigation {
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                transform: none;
+                border-radius: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <i class="fas fa-brain"></i>
+                    <span>TaxMind AI</span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li id="authButton"><a href="signup.html" class="btn-primary">Get Started</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Progress Indicator -->
+    <div class="progress-indicator">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-text" id="progressText">Step 1 of 6</div>
+    </div>
+
+    <!-- Tutorial Container -->
+    <div class="tutorial-container">
+        <div class="tutorial-header">
+            <h1 class="tutorial-title">TaxMind AI Interactive Tutorial</h1>
+            <p class="tutorial-subtitle">Learn how to use TaxMind AI to streamline your tax filing process</p>
+            <div class="tutorial-controls">
+                <button class="tutorial-btn primary" onclick="startTutorial()">
+                    <i class="fas fa-play"></i>
+                    Start Tutorial
+                </button>
+                <button class="tutorial-btn secondary" onclick="skipToDemo()">
+                    <i class="fas fa-rocket"></i>
+                    Skip to Demo
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 1: Introduction -->
+        <div class="tutorial-step" id="step1">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <h2 class="step-title">Welcome to TaxMind AI</h2>
+            </div>
+            <div class="step-description">
+                TaxMind AI is an intelligent tax preparation platform that uses artificial intelligence to analyze your financial documents, identify deductions, and help you file your taxes accurately and efficiently.
+            </div>
+            <div class="demo-screenshot">
+                <div class="demo-placeholder">
+                    <i class="fas fa-home"></i>
+                    <p>TaxMind AI Homepage</p>
+                </div>
+            </div>
+            <div class="tutorial-highlight">
+                <div class="tutorial-highlight-text">
+                    In this tutorial, we'll walk through the complete process of using TaxMind AI, from uploading documents to filing your taxes.
+                </div>
+            </div>
+            <div class="step-actions">
+                <a href="index.html" class="action-btn">
+                    <i class="fas fa-external-link-alt"></i>
+                    View Homepage
+                </a>
+            </div>
+        </div>
+
+        <!-- Step 2: Sign Up -->
+        <div class="tutorial-step" id="step2">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <h2 class="step-title">Create Your Account</h2>
+            </div>
+            <div class="step-description">
+                Start by creating your TaxMind AI account. Simply provide your basic information and you'll be ready to begin your tax journey.
+            </div>
+            <div class="demo-screenshot">
+                <div class="demo-placeholder">
+                    <i class="fas fa-user-plus"></i>
+                    <p>Sign Up Form</p>
+                </div>
+            </div>
+            <div class="tutorial-highlight">
+                <div class="tutorial-highlight-text">
+                    Your account information is securely encrypted and never shared with third parties.
+                </div>
+            </div>
+            <div class="step-actions">
+                <a href="signup.html" class="action-btn">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </a>
+            </div>
+        </div>
+
+        <!-- Step 3: Upload Documents -->
+        <div class="tutorial-step" id="step3">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <h2 class="step-title">Upload Your Tax Documents</h2>
+            </div>
+            <div class="step-description">
+                Upload your tax documents including W-2s, 1099s, receipts, and other financial records. TaxMind AI supports PDF, Excel, CSV, and image files.
+            </div>
+            <div class="demo-screenshot">
+                <div class="demo-placeholder">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Document Upload Interface</p>
+                </div>
+            </div>
+            <div class="tutorial-highlight">
+                <div class="tutorial-highlight-text">
+                    You can drag and drop files or click to browse. The system automatically validates file types and sizes.
+                </div>
+            </div>
+            <div class="step-actions">
+                <a href="upload-documents.html" class="action-btn">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    Upload Documents
+                </a>
+            </div>
+        </div>
+
+        <!-- Step 4: AI Analysis -->
+        <div class="tutorial-step" id="step4">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <h2 class="step-title">Run AI Analysis</h2>
+            </div>
+            <div class="step-description">
+                Once your documents are uploaded, TaxMind AI analyzes them to extract financial data, identify deductions, and calculate your tax obligations.
+            </div>
+            <div class="demo-screenshot">
+                <div class="demo-placeholder">
+                    <i class="fas fa-robot"></i>
+                    <p>AI Analysis in Progress</p>
+                </div>
+            </div>
+            <div class="tutorial-highlight">
+                <div class="tutorial-highlight-text">
+                    The AI can process business tax reports, individual returns, and complex financial documents with high accuracy.
+                </div>
+            </div>
+            <div class="step-actions">
+                <a href="ai-analysis.html" class="action-btn">
+                    <i class="fas fa-robot"></i>
+                    Run Analysis
+                </a>
+            </div>
+        </div>
+
+        <!-- Step 5: Review Report -->
+        <div class="tutorial-step" id="step5">
+            <div class="step-header">
+                <div class="step-number">5</div>
+                <h2 class="step-title">Review Your Tax Report</h2>
+            </div>
+            <div class="step-description">
+                Review the comprehensive tax report generated by TaxMind AI. The report includes income summary, deductions, tax calculations, and recommendations.
+            </div>
+            <div class="demo-screenshot">
+                <div class="demo-placeholder">
+                    <i class="fas fa-file-alt"></i>
+                    <p>Tax Report Dashboard</p>
+                </div>
+            </div>
+            <div class="tutorial-highlight">
+                <div class="tutorial-highlight-text">
+                    All calculations are transparent and you can see exactly how your tax liability was determined.
+                </div>
+            </div>
+            <div class="step-actions">
+                <a href="view-report.html" class="action-btn">
+                    <i class="fas fa-file-alt"></i>
+                    View Report
+                </a>
+            </div>
+        </div>
+
+        <!-- Step 6: File Taxes -->
+        <div class="tutorial-step" id="step6">
+            <div class="step-header">
+                <div class="step-number">6</div>
+                <h2 class="step-title">File Your Taxes</h2>
+            </div>
+            <div class="step-description">
+                Once you're satisfied with your tax report, you can file your taxes directly through TaxMind AI. The system prepares all necessary forms and submits them to the IRS.
+            </div>
+            <div class="demo-screenshot">
+                <div class="demo-placeholder">
+                    <i class="fas fa-paper-plane"></i>
+                    <p>Tax Filing Interface</p>
+                </div>
+            </div>
+            <div class="tutorial-highlight">
+                <div class="tutorial-highlight-text">
+                    TaxMind AI handles all the complex form preparation and ensures compliance with current tax laws.
+                </div>
+            </div>
+            <div class="step-actions">
+                <a href="file-taxes.html" class="action-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    File Taxes
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tutorial Navigation -->
+    <div class="tutorial-navigation">
+        <button class="nav-btn" id="prevBtn" onclick="previousStep()" disabled>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="nav-btn" id="nextBtn" onclick="nextStep()">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <button class="nav-btn" id="completeBtn" onclick="completeTutorial()" style="display: none;">
+            <i class="fas fa-check"></i>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        let currentStep = 1;
+        const totalSteps = 6;
+
+        function startTutorial() {
+            currentStep = 1;
+            updateTutorialDisplay();
+            document.querySelector('.tutorial-controls').style.display = 'none';
+        }
+
+        function skipToDemo() {
+            window.location.href = 'dashboard.html';
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateTutorialDisplay();
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateTutorialDisplay();
+            }
+        }
+
+        function updateTutorialDisplay() {
+            // Update progress
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Step ${currentStep} of ${totalSteps}`;
+
+            // Update step visibility
+            for (let i = 1; i <= totalSteps; i++) {
+                const step = document.getElementById(`step${i}`);
+                if (i < currentStep) {
+                    step.classList.remove('active');
+                    step.classList.add('completed');
+                } else if (i === currentStep) {
+                    step.classList.remove('completed');
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+            }
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentStep === 1;
+            
+            if (currentStep === totalSteps) {
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('completeBtn').style.display = 'flex';
+            } else {
+                document.getElementById('nextBtn').style.display = 'flex';
+                document.getElementById('completeBtn').style.display = 'none';
+            }
+        }
+
+        function completeTutorial() {
+            alert('Tutorial completed! You\'re now ready to use TaxMind AI. Redirecting to dashboard...');
+            window.location.href = 'dashboard.html';
+        }
+
+        // Auto-start tutorial after 3 seconds
+        setTimeout(() => {
+            if (currentStep === 1) {
+                startTutorial();
+            }
+        }, 3000);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextStep();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousStep();
+            }
+        });
+    </script>
+</body>
+</html>
+

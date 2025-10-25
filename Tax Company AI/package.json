@@ -1,0 +1,28 @@
+{
+  "name": "taxmind-ai-website",
+  "version": "1.0.0",
+  "description": "TaxMind AI - Intelligent Tax Filing Automation Platform",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 3000",
+    "build": "echo 'Build completed'",
+    "dev": "npx live-server --port=3000"
+  },
+  "keywords": [
+    "tax",
+    "ai",
+    "automation",
+    "fintech",
+    "tax-filing",
+    "machine-learning"
+  ],
+  "author": "TaxMind AI Team",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {
+    "font-awesome": "^6.0.0"
+  }
+}

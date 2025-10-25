@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaxMind AI - Live Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .demo-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-subtitle {
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .demo-btn.primary {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+        }
+        
+        .demo-btn.secondary {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .demo-step {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0.3;
+            transform: scale(0.95);
+            transition: all 0.5s ease;
+        }
+        
+        .demo-step.active {
+            opacity: 1;
+            transform: scale(1);
+            border: 2px solid #2563eb;
+        }
+        
+        .demo-step.completed {
+            opacity: 0.8;
+            border: 2px solid #10b981;
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .step-number.completed {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .step-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .step-description {
+            color: #64748b;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .demo-content {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 2px dashed #cbd5e1;
+        }
+        
+        .demo-mockup {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 1rem 0;
+        }
+        
+        .mockup-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .mockup-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .mockup-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .mockup-content {
+            color: #64748b;
+            line-height: 1.6;
+        }
+        
+        .demo-progress {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        
+        .demo-progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .demo-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .data-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+        }
+        
+        .data-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .data-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .demo-results {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 2px solid #0ea5e9;
+        }
+        
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0c4a6e;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .result-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .result-value.positive {
+            color: #10b981;
+        }
+        
+        .result-value.negative {
+            color: #ef4444;
+        }
+        
+        .demo-navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            box-shadow: modest 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            padding: 0.75rem 1rem;
+            border: none;
+            background: #e2e8f0;
+            color: #475569;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-btn:hover {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .demo-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+        
+        .status-text {
+            font-size: 0.9rem;
+            color: #64748b;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .demo-container {
+                padding: 1rem;
+            }
+            
+            .demo-title {
+                font-size: 2rem;
+            }
+            
+            .demo-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .demo-navigation {
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                transform: none;
+                border-radius: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <i class="fas fa-brain"></i>
+                    <span>TaxMind AI</span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="tutorial.html">Tutorial</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li id="authButton"><a href="signup.html" class="btn-primary">Get Started</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Demo Status -->
+    <div class="demo-status">
+        <div class="status-text" id="demoStatus">Demo Ready</div>
+    </div>
+
+    <!-- Demo Container -->
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1 class="demo-title">TaxMind AI Live Demo</h1>
+            <p class="demo-subtitle">Experience the complete TaxMind AI workflow with realistic data</p>
+            <div class="demo-controls">
+                <button class="demo-btn primary" onclick="startDemo()">
+                    <i class="fas fa-play"></i>
+                    Start Live Demo
+                </button>
+                <button class="demo-btn secondary" onclick="resetDemo()">
+                    <i class="fas fa-redo"></i>
+                    Reset Demo
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 1: Upload Documents -->
+        <div class="demo-step" id="step1">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <h2 class="step-title">Upload Tax Documents</h2>
+            </div>
+            <div class="step-description">
+                Upload your tax documents including W-2s, 1099s, receipts, and other financial records.
+            </div>
+            <div class="demo-content">
+                <div class="demo-mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="mockup-title">Document Upload</div>
+                    </div>
+                    <div class="mockup-content">
+                        <p>Uploading GreenLeaf Cafe Tax Report 2024...</p>
+                        <div class="demo-progress">
+                            <div class="demo-progress-fill" id="uploadProgress"></div>
+                        </div>
+                        <div class="demo-data">
+                            <div class="data-item">
+                                <div class="data-label">Files Uploaded</div>
+                                <div class="data-value" id="filesCount">0</div>
+                            </div>
+                            <div class="data-item">
+                                <div class="data-label">Total Size</div>
+                                <div class="data-value" id="totalSize">0 MB</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: AI Analysis -->
+        <div class="demo-step" id="step2">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <h2 class="step-title">AI Analysis</h2>
+            </div>
+            <div class="step-description">
+                TaxMind AI analyzes your documents to extract financial data and identify deductions.
+            </div>
+            <div class="demo-content">
+                <div class="demo-mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="mockup-title">AI Analysis in Progress</div>
+                    </div>
+                    <div class="mockup-content">
+                        <p id="analysisStatus">Starting analysis...</p>
+                        <div class="demo-progress">
+                            <div class="demo-progress-fill" id="analysisProgress"></div>
+                        </div>
+                        <div class="demo-data">
+                            <div class="data-item">
+                                <div class="data-label">Documents Processed</div>
+                                <div class="data-value" id="processedDocs">0</div>
+                            </div>
+                            <div class="data-item">
+                                <div class="data-label">Data Points Extracted</div>
+                                <div class="data-value" id="dataPoints">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Review Results -->
+        <div class="demo-step" id="step3">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <h2 class="step-title">Review Tax Report</h2>
+            </div>
+            <div class="step-description">
+                Review the comprehensive tax report generated by TaxMind AI.
+            </div>
+            <div class="demo-content">
+                <div class="demo-results">
+                    <div class="results-title">
+                        <i class="fas fa-file-alt"></i>
+                        GreenLeaf Cafe - Tax Report 2024
+                    </div>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-label">Total Income</div>
+                            <div class="result-value positive" id="totalIncome">$180,080</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Total Expenses</div>
+                            <div class="result-value negative" id="totalExpenses">$159,000</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Taxable Income</div>
+                            <div class="result-value" id="taxableIncome">$21,080</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Estimated Tax</div>
+                            <div class="result-value negative" id="estimatedTax">$4,427</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: File Taxes -->
+        <div class="demo-step" id="step4">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <h2 class="step-title">File Taxes</h2>
+            </div>
+            <div class="step-description">
+                Submit your taxes to the IRS through TaxMind AI's secure filing system.
+            </div>
+            <div class="demo-content">
+                <div class="demo-mockup">
+                    <div class="mockup-header">
+                        <div class="mockup-icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <div class="mockup-title">Tax Filing</div>
+                    </div>
+                    <div class="mockup-content">
+                        <p>Preparing tax forms for submission...</p>
+                        <div class="demo-progress">
+                            <div class="demo-progress-fill" id="filingProgress"></div>
+                        </div>
+                        <div class="demo-data">
+                            <div class="data-item">
+                                <div class="data-label">Forms Prepared</div>
+                                <div class="data-value" id="formsPrepared">0</div>
+                            </div>
+                            <div class="data-item">
+                                <div class="data-label">Submission Status</div>
+                                <div class="data-value" id="submissionStatus">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Navigation -->
+    <div class="demo-navigation">
+        <button class="nav-btn" id="prevBtn" onclick="previousStep()" disabled>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="nav-btn" id="nextBtn" onclick="nextStep()">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <button class="nav-btn" id="completeBtn" onclick="completeDemo()" style="display: none;">
+            <i class="fas fa-check"></i>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+        let demoRunning = false;
+
+        function startDemo() {
+            if (demoRunning) return;
+            demoRunning = true;
+            document.querySelector('.demo-controls').style.display = 'none';
+            document.getElementById('demoStatus').textContent = 'Demo Running';
+            updateStepDisplay();
+            runStep1();
+        }
+
+        function resetDemo() {
+            demoRunning = false;
+            currentStep = 1;
+            document.querySelector('.demo-controls').style.display = 'flex';
+            document.getElementById('demoStatus').textContent = 'Demo Ready';
+            resetAllSteps();
+        }
+
+        function runStep1() {
+            const step = document.getElementById('step1');
+            step.classList.add('active');
+            
+            // Simulate file upload
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 20;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    document.getElementById('filesCount').textContent = '3';
+                    document.getElementById('totalSize').textContent = '2.4 MB';
+                    setTimeout(() => runStep2(), 1000);
+                }
+                document.getElementById('uploadProgress').style.width = progress + '%';
+            }, 200);
+        }
+
+        function runStep2() {
+            const step = document.getElementById('step2');
+            step.classList.add('active');
+            
+            // Simulate AI analysis
+            let progress = 0;
+            const statuses = [
+                'Processing documents...',
+                'Extracting business information...',
+                'Analyzing income sources...',
+                'Processing expense categories...',
+                'Calculating tax liability...',
+                'Generating report...'
+            ];
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    document.getElementById('processedDocs').textContent = '3';
+                    document.getElementById('dataPoints').textContent = '47';
+                    setTimeout(() => runStep3(), 1000);
+                }
+                document.getElementById('analysisProgress').style.width = progress + '%';
+                
+                const statusIndex = Math.floor((progress / 100) * statuses.length);
+                if (statusIndex < statuses.length) {
+                    document.getElementById('analysisStatus').textContent = statuses[statusIndex];
+                }
+            }, 300);
+        }
+
+        function runStep3() {
+            const step = document.getElementById('step3');
+            step.classList.add('active');
+            
+            // Animate the results
+            setTimeout(() => {
+                animateValue('totalIncome', 0, 180080, 2000);
+                animateValue('totalExpenses', 0, 159000, 2000);
+                animateValue('taxableIncome', 0, 21080, 2000);
+                animateValue('estimatedTax', 0, 4427, 2000);
+                setTimeout(() => runStep4(), 2500);
+            }, 500);
+        }
+
+        function runStep4() {
+            const step = document.getElementById('step4');
+            step.classList.add('active');
+            
+            // Simulate tax filing
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 25;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    document.getElementById('formsPrepared').textContent = '5';
+                    document.getElementById('submissionStatus').textContent = 'Submitted';
+                    setTimeout(() => completeDemo(), 1000);
+                }
+                document.getElementById('filingProgress').style.width = progress + '%';
+            }, 200);
+        }
+
+        function animateValue(elementId, start, end, duration) {
+            const element = document.getElementById(elementId);
+            const startTime = performance.now();
+            
+            function updateValue(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const current = start + (end - start) * progress;
+                
+                if (elementId.includes('Tax') || elementId.includes('Expenses')) {
+                    element.textContent = '$' + Math.round(current).toLocaleString();
+                } else {
+                    element.textContent = '$' + Math.round(current).toLocaleString();
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateValue);
+                }
+            }
+            
+            requestAnimationFrame(updateValue);
+        }
+
+        function updateStepDisplay() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const step = document.getElementById(`step${i}`);
+                if (i < currentStep) {
+                    step.classList.remove('active');
+                    step.classList.add('completed');
+                } else if (i === currentStep) {
+                    step.classList.remove('completed');
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+            }
+        }
+
+        function resetAllSteps() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const step = document.getElementById(`step${i}`);
+                step.classList.remove('active', 'completed');
+            }
+            
+            // Reset all progress bars and values
+            document.getElementById('uploadProgress').style.width = '0%';
+            document.getElementById('analysisProgress').style.width = '0%';
+            document.getElementById('filingProgress').style.width = '0%';
+            
+            document.getElementById('filesCount').textContent = '0';
+            document.getElementById('totalSize').textContent = '0 MB';
+            document.getElementById('processedDocs').textContent = '0';
+            document.getElementById('dataPoints').textContent = '0';
+            document.getElementById('formsPrepared').textContent = '0';
+            document.getElementById('submissionStatus').textContent = 'Pending';
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateStepDisplay();
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepDisplay();
+            }
+        }
+
+        function completeDemo() {
+            document.getElementById('demoStatus').textContent = 'Demo Complete';
+            alert('Demo completed! TaxMind AI successfully processed your tax documents and filed your taxes. Ready to try it yourself?');
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextStep();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousStep();
+            }
+        });
+    </script>
+</body>
+</html>
+

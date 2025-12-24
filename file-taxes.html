@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Taxes - TaxMind AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .file-page {
+            min-height: 100vh;
+            background: #f8fafc;
+            padding-top: 80px;
+        }
+        
+        .file-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 20px;
+        }
+        
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-description {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+        
+        .file-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        .file-main {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .file-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .file-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        
+        .filing-summary {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        
+        .summary-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .summary-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .summary-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .filing-steps {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .filing-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .filing-step.active {
+            background: #f0f9ff;
+            border-color: #2563eb;
+        }
+        
+        .filing-step.completed {
+            background: #f0fdf4;
+            border-color: #10b981;
+        }
+        
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #64748b;
+            background: #e5e7eb;
+        }
+        
+        .filing-step.active .step-icon {
+            background: #2563eb;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        .filing-step.completed .step-icon {
+            background: #10b981;
+            color: white;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        
+        .step-description {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        
+        .step-status {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .status-pending {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .status-active {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .filing-form {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            margin-top: 0.25rem;
+        }
+        
+        .checkbox-group label {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+        
+        .filing-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        
+        .filing-button:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+        
+        .filing-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .filing-success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            display: none;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+        
+        .success-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #065f46;
+            margin-bottom: 0.5rem;
+        }
+        
+        .success-description {
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+        
+        .confirmation-number {
+            background: #e8f5e8;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .confirmation-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+        }
+        
+        .confirmation-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #065f46;
+            font-family: monospace;
+        }
+        
+        .next-steps {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .next-steps-title {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+        
+        .next-step-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .next-step-item:last-child {
+            border-bottom: none;
+        }
+        
+        .next-step-icon {
+            width: 24px;
+            height: 24px;
+            background: #dbeafe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e40af;
+            font-size: 0.8rem;
+        }
+        
+        .next-step-text {
+            color: #1e40af;
+            font-size: 0.9rem;
+        }
+        
+        .quick-actions {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .quick-action-btn {
+            background: white;
+            border: 2px solid #e5e7eb;
+            padding: 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #374151;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .quick-action-btn:hover {
+            border-color: #2563eb;
+            background: #f0f9ff;
+        }
+        
+        .action-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #2563eb;
+        }
+        
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .action-desc {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        
+        .filing-status {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .status-title {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-text {
+            color: #1e40af;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .file-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>TaxMind AI</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="upload-documents.html">Upload</a></li>
+                <li><a href="ai-analysis.html">Analysis</a></li>
+                <li><a href="document-highlights.html">Document Highlights</a></li>
+                <li><a href="view-report.html">Report</a></li>
+                <li><a href="file-taxes.html" class="active">File</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- File Taxes Page Content -->
+    <div class="file-page">
+        <div class="file-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">File Your Taxes</h1>
+                <p class="page-description">Submit your tax return to the IRS securely and efficiently with TaxMind AI.</p>
+            </div>
+
+            <!-- Filing Summary -->
+            <div class="filing-summary">
+                <h2 class="summary-title">Ready to File</h2>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="summary-value" id="filingTotalIncome" style="color: #94a3b8; font-style: italic;">—</div>
+                        <div class="summary-label">Total Income</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value" id="filingTotalDeductions" style="color: #94a3b8; font-style: italic;">—</div>
+                        <div class="summary-label">Total Deductions</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value" id="filingEstimatedRefund" style="color: #94a3b8; font-style: italic;">—</div>
+                        <div class="summary-label">Estimated Refund</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value" id="filingTaxYear">2023</div>
+                        <div class="summary-label">Tax Year</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Filing Grid -->
+            <div class="file-grid">
+                <!-- Main Filing Area -->
+                <div class="file-main">
+                    <!-- Filing Steps -->
+                    <div class="file-card">
+                        <h3 class="card-title">Filing Process</h3>
+                        <div class="filing-steps">
+                            <div class="filing-step completed" id="step1">
+                                <div class="step-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="step-content">
+                                    <div class="step-title">Review Tax Return</div>
+                                    <div class="step-description">All calculations have been verified</div>
+                                </div>
+                                <div class="step-status status-completed">Completed</div>
+                            </div>
+                            <div class="filing-step active" id="step2">
+                                <div class="step-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="step-content">
+                                    <div class="step-title">Verify Identity</div>
+                                    <div class="step-description">Confirm your personal information</div>
+                                </div>
+                                <div class="step-status status-active">In Progress</div>
+                            </div>
+                            <div class="filing-step" id="step3">
+                                <div class="step-icon">
+                                    <i class="fas fa-shield-check"></i>
+                                </div>
+                                <div class="step-content">
+                                    <div class="step-title">Security Check</div>
+                                    <div class="step-description">Secure transmission to IRS</div>
+                                </div>
+                                <div class="step-status status-pending">Pending</div>
+                            </div>
+                            <div class="filing-step" id="step4">
+                                <div class="step-icon">
+                                    <i class="fas fa-paper-plane"></i>
+                                </div>
+                                <div class="step-content">
+                                    <div class="step-title">Submit to IRS</div>
+                                    <div class="step-description">Final submission and confirmation</div>
+                                </div>
+                                <div class="step-status status-pending">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Business Questionnaire Link (for business accounts) -->
+                    <div class="file-card" id="businessQuestionnairePrompt" style="display: none; margin-bottom: 2rem; background: #f0f9ff; border: 2px solid #2563eb;">
+                        <div style="padding: 1.5rem;">
+                            <h3 style="margin: 0 0 1rem; color: #1e40af;">Business Tax Information Required</h3>
+                            <p style="color: #64748b; margin-bottom: 1rem;">Before filing your taxes, please complete the business questionnaire with all required information.</p>
+                            <a href="business-questionnaire.html" class="filing-button" style="display: inline-block; text-decoration: none;">
+                                <i class="fas fa-clipboard-list"></i>
+                                Complete Business Questionnaire
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Filing Form -->
+                    <div class="file-card">
+                        <h3 class="card-title">Identity Verification</h3>
+                        <form id="filingForm" class="filing-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ssn">Social Security Number</label>
+                                    <input type="text" id="ssn" name="ssn" placeholder="XXX-XX-XXXX" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthDate">Date of Birth</label>
+                                    <input type="date" id="birthDate" name="birthDate" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="filingStatus">Filing Status</label>
+                                    <select id="filingStatus" name="filingStatus" required>
+                                        <option value="">Select filing status</option>
+                                        <option value="single">Single</option>
+                                        <option value="married">Married Filing Jointly</option>
+                                        <option value="separate">Married Filing Separately</option>
+                                        <option value="head">Head of Household</option>
+                                        <option value="widow">Qualifying Widow(er)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="refundMethod">Refund Method</label>
+                                    <select id="refundMethod" name="refundMethod" required>
+                                        <option value="">Select refund method</option>
+                                        <option value="direct">Direct Deposit</option>
+                                        <option value="check">Paper Check</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Spouse Information (if married filing jointly) -->
+                            <div id="spouseInfoSection" style="display: none;">
+                                <h4 style="margin: 1.5rem 0 1rem; color: #1e293b; font-size: 1.1rem;">Spouse Information</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="spouseFirstName">Spouse First Name</label>
+                                        <input type="text" id="spouseFirstName" name="spouseFirstName" placeholder="Enter spouse first name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="spouseLastName">Spouse Last Name</label>
+                                        <input type="text" id="spouseLastName" name="spouseLastName" placeholder="Enter spouse last name">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="spouseSSN">Spouse Social Security Number</label>
+                                        <input type="text" id="spouseSSN" name="spouseSSN" placeholder="XXX-XX-XXXX">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="spouseBirthDate">Spouse Date of Birth</label>
+                                        <input type="date" id="spouseBirthDate" name="spouseBirthDate">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Dependent Information -->
+                            <div class="form-group">
+                                <label for="numberOfDependents">Number of Dependents</label>
+                                <select id="numberOfDependents" name="numberOfDependents" required onchange="toggleDependentsSection()">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5 or more</option>
+                                </select>
+                            </div>
+                            
+                            <div id="dependentsSection" style="display: none;">
+                                <h4 style="margin: 1.5rem 0 1rem; color: #1e293b; font-size: 1.1rem;">Dependent Information</h4>
+                                <div id="dependentsList"></div>
+                            </div>
+                            
+                            <!-- Bank Information (Enhanced) -->
+                            <h4 style="margin: 1.5rem 0 1rem; color: #1e293b; font-size: 1.1rem;">Bank Information (for Direct Deposit)</h4>
+                            <div class="form-group">
+                                <label for="accountType">Account Type</label>
+                                <select id="accountType" name="accountType">
+                                    <option value="">Select account type</option>
+                                    <option value="checking">Checking</option>
+                                    <option value="savings">Savings</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="accountHolderName">Account Holder Name</label>
+                                <input type="text" id="accountHolderName" name="accountHolderName" placeholder="Name as it appears on the account">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="bankAccount">Bank Account Number</label>
+                                <input type="text" id="bankAccount" name="bankAccount" placeholder="Enter account number">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="routingNumber">Routing Number</label>
+                                <input type="text" id="routingNumber" name="routingNumber" placeholder="Enter 9-digit routing number">
+                            </div>
+                            
+                            <!-- Additional IRS Required Info -->
+                            <h4 style="margin: 1.5rem 0 1rem; color: #1e293b; font-size: 1.1rem;">IRS Verification Information</h4>
+                            <div class="form-group">
+                                <label for="priorYearAGI">Prior Year Adjusted Gross Income (AGI)</label>
+                                <input type="text" id="priorYearAGI" name="priorYearAGI" placeholder="Required for e-file verification (leave blank if first time filing)">
+                                <small style="color: #64748b; font-size: 0.85rem; display: block; margin-top: 0.25rem;">Enter your prior year AGI if you filed last year. This helps verify your identity.</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="identityPin">Identity Protection PIN (IP PIN) - Optional</label>
+                                <input type="text" id="identityPin" name="identityPin" placeholder="6-digit PIN (if you have one)" maxlength="6">
+                                <small style="color: #64748b; font-size: 0.85rem; display: block; margin-top: 0.25rem;">If the IRS issued you an Identity Protection PIN, enter it here.</small>
+                            </div>
+                            
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                                <label for="agreeTerms">
+                                    I agree to the <a href="#" target="_blank">Terms of Service</a> and confirm that all information is accurate
+                                </label>
+                            </div>
+                            
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="electronicSignature" name="electronicSignature" required>
+                                <label for="electronicSignature">
+                                    I authorize TaxMind AI to electronically file my tax return on my behalf
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="filing-button" id="filingButton">
+                                <i class="fas fa-paper-plane"></i>
+                                File My Taxes
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Filing Success -->
+                    <div class="filing-success" id="filingSuccess">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3 class="success-title">Taxes Filed Successfully!</h3>
+                        <p class="success-description">
+                            Your tax return has been submitted to the IRS. You will receive a confirmation email shortly.
+                        </p>
+                        
+                        <div class="confirmation-number">
+                            <div class="confirmation-label">Confirmation Number</div>
+                            <div class="confirmation-value" id="confirmationNumber">TM-2024-789456123</div>
+                        </div>
+                        
+                        <div class="next-steps">
+                            <h4 class="next-steps-title">What's Next?</h4>
+                            <div class="next-step-item">
+                                <div class="next-step-icon">1</div>
+                                <div class="next-step-text">You will receive an email confirmation within 24 hours</div>
+                            </div>
+                            <div class="next-step-item">
+                                <div class="next-step-icon">2</div>
+                                <div class="next-step-text">Your refund will be processed within 21 days</div>
+                            </div>
+                            <div class="next-step-item">
+                                <div class="next-step-icon">3</div>
+                                <div class="next-step-text">Track your refund status at irs.gov/refunds</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="file-sidebar">
+                    <!-- Filing Status -->
+                    <div class="file-card">
+                        <h3 class="card-title">Filing Status</h3>
+                        <div class="filing-status">
+                            <h4 class="status-title">Ready to File</h4>
+                            <div class="status-indicator">
+                                <div class="status-dot"></div>
+                                <span class="status-text">All checks passed</span>
+                            </div>
+                            <p style="color: #64748b; font-size: 0.9rem;">Your tax return has been reviewed and is ready for submission to the IRS.</p>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="file-card">
+                        <h3 class="card-title">Quick Actions</h3>
+                        <div class="quick-actions">
+                            <a href="view-report.html" class="quick-action-btn">
+                                <div class="action-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="action-title">Review Report</div>
+                                <div class="action-desc">Check your tax summary</div>
+                            </a>
+                            <a href="upload-documents.html" class="quick-action-btn">
+                                <div class="action-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="action-title">Upload Documents</div>
+                                <div class="action-desc">Add more files</div>
+                            </a>
+                            <a href="ai-analysis.html" class="quick-action-btn">
+                                <div class="action-icon">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="action-title">Re-run Analysis</div>
+                                <div class="action-desc">Update calculations</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Component -->
+    <script src="chatbot-rules.js"></script>
+    <script src="chatbot.js"></script>
+    <script>
+        // Initialize chatbot when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                if (typeof Chatbot !== 'undefined') {
+                    Chatbot.init();
+                }
+            });
+        } else {
+            if (typeof Chatbot !== 'undefined') {
+                Chatbot.init();
+            }
+        }
+    </script>
+
+    <!-- PDF.js for document parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- Tesseract.js for OCR -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="document-parser.js"></script>
+    <script src="file-taxes.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

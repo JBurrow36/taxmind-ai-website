@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="60">
+    <title>Security Maintenance - TaxMind AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ef4444;
+            font-weight: 700;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+        
+        .alert {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .alert p {
+            font-size: 0.95rem;
+            color: #fca5a5;
+            margin: 0;
+        }
+        
+        .status {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+            
+            .icon {
+                font-size: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🔒</div>
+        <h1>Security Maintenance</h1>
+        <p>Our automated security system has detected a potential threat and has temporarily disabled access to protect our systems and your data.</p>
+        <p>We're working to resolve this issue as quickly as possible. The site will automatically restore access once the security check passes.</p>
+        <div class="alert">
+            <p><strong>Automated Security Response:</strong> This is an automated security measure activated by our security monitoring system. Please check back in a few minutes.</p>
+        </div>
+        <div class="status">
+            <p>Page will automatically refresh every 60 seconds to check if service has been restored.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Check killswitch status periodically
+        setInterval(async () => {
+            try {
+                const response = await fetch('/api/security/killswitch-status');
+                if (response.ok) {
+                    const status = await response.json();
+                    if (!status.active) {
+                        // Killswitch deactivated, redirect to home
+                        window.location.href = '/';
+                    }
+                }
+            } catch (e) {
+                // API not available, continue showing maintenance
+            }
+        }, 30000); // Check every 30 seconds
+    </script>
+</body>
+</html>
+

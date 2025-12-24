@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Tax Information - TaxMind AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .questionnaire-page {
+            min-height: 100vh;
+            background: #f8fafc;
+            padding-top: 80px;
+            padding-bottom: 2rem;
+        }
+        
+        .questionnaire-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .questionnaire-card {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .questionnaire-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .questionnaire-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .questionnaire-header p {
+            color: #64748b;
+            font-size: 1rem;
+        }
+        
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .form-section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .form-group input.error,
+        .form-group select.error {
+            border-color: #ef4444;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        .form-group input.error + .error-message,
+        .form-group select.error + .error-message {
+            display: block;
+        }
+        
+        .help-text {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .submit-button:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+        
+        .submit-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .conditional-section {
+            display: none;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .conditional-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>TaxMind AI</span>
+            </div>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="file-taxes.html">File Taxes</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="questionnaire-page">
+        <div class="questionnaire-container">
+            <div class="questionnaire-card">
+                <div class="questionnaire-header">
+                    <h1>Business Tax Information</h1>
+                    <p>Complete all required information for your business tax filing</p>
+                </div>
+                
+                <form id="businessQuestionnaireForm">
+                    <!-- Business Information -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">
+                            <i class="fas fa-building"></i>
+                            Business Information
+                        </h2>
+                        
+                        <div class="form-group">
+                            <label for="businessName">Business Name *</label>
+                            <input type="text" id="businessName" name="businessName" required placeholder="Enter business legal name">
+                            <span class="help-text">Legal name as registered with state/federal government</span>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="businessType">Business Type *</label>
+                                <select id="businessType" name="businessType" required onchange="updateFormFields()">
+                                    <option value="">Select business type</option>
+                                    <option value="sole_proprietorship">Sole Proprietorship</option>
+                                    <option value="partnership">Partnership</option>
+                                    <option value="llc">LLC (Limited Liability Company)</option>
+                                    <option value="s_corp">S-Corporation</option>
+                                    <option value="c_corp">C-Corporation</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="fiscalYearEnd">Fiscal Year End *</label>
+                                <select id="fiscalYearEnd" name="fiscalYearEnd" required>
+                                    <option value="">Select month</option>
+                                    <option value="12-31">December 31 (Calendar Year)</option>
+                                    <option value="01-31">January 31</option>
+                                    <option value="02-28">February 28</option>
+                                    <option value="03-31">March 31</option>
+                                    <option value="04-30">April 30</option>
+                                    <option value="05-31">May 31</option>
+                                    <option value="06-30">June 30</option>
+                                    <option value="07-31">July 31</option>
+                                    <option value="08-31">August 31</option>
+                                    <option value="09-30">September 30</option>
+                                    <option value="10-31">October 31</option>
+                                    <option value="11-30">November 30</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ein">Employer Identification Number (EIN) *</label>
+                            <input type="text" id="ein" name="ein" required placeholder="XX-XXXXXXX" maxlength="10">
+                            <span class="help-text">9-digit EIN in XX-XXXXXXX format. Required for all businesses except sole proprietorships without employees.</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="businessAddress">Business Address *</label>
+                            <textarea id="businessAddress" name="businessAddress" required rows="3" placeholder="Street address, City, State, ZIP"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Revenue & Financial Information -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">
+                            <i class="fas fa-dollar-sign"></i>
+                            Revenue & Financial Information
+                        </h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="grossReceipts">Gross Receipts/Revenue *</label>
+                                <input type="text" id="grossReceipts" name="grossReceipts" required placeholder="$0.00">
+                                <span class="help-text">Total business income before expenses</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="costOfGoodsSold">Cost of Goods Sold (COGS)</label>
+                                <input type="text" id="costOfGoodsSold" name="costOfGoodsSold" placeholder="$0.00">
+                                <span class="help-text">Only for businesses that sell products</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="totalExpenses">Total Business Expenses *</label>
+                            <input type="text" id="totalExpenses" name="totalExpenses" required placeholder="$0.00">
+                            <span class="help-text">Sum of all deductible business expenses</span>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="netProfit">Net Profit/Loss *</label>
+                                <input type="text" id="netProfit" name="netProfit" readonly placeholder="Calculated automatically">
+                                <span class="help-text">Gross Receipts - COGS - Expenses</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="taxYear">Tax Year *</label>
+                                <input type="text" id="taxYear" name="taxYear" required placeholder="2024" maxlength="4">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Partnership/LLC Information -->
+                    <div class="conditional-section" id="partnershipSection">
+                        <h3 style="margin-bottom: 1rem; color: #1e293b;">Partnership/LLC Information</h3>
+                        
+                        <div class="form-group">
+                            <label for="numberOfPartners">Number of Partners/Members *</label>
+                            <input type="number" id="numberOfPartners" name="numberOfPartners" min="2" placeholder="Enter number">
+                        </div>
+                        
+                        <div id="partnersList"></div>
+                    </div>
+                    
+                    <!-- Corporation Information -->
+                    <div class="conditional-section" id="corporationSection">
+                        <h3 style="margin-bottom: 1rem; color: #1e293b;">Corporation Information</h3>
+                        
+                        <div class="form-group">
+                            <label for="numberOfShareholders">Number of Shareholders *</label>
+                            <input type="number" id="numberOfShareholders" name="numberOfShareholders" min="1" placeholder="Enter number">
+                        </div>
+                        
+                        <div id="shareholdersList"></div>
+                    </div>
+                    
+                    <!-- Payroll Information -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">
+                            <i class="fas fa-users"></i>
+                            Payroll Information
+                        </h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="numberOfEmployees">Number of Employees *</label>
+                                <input type="number" id="numberOfEmployees" name="numberOfEmployees" required min="0" placeholder="0">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="totalPayrollExpenses">Total Payroll Expenses</label>
+                                <input type="text" id="totalPayrollExpenses" name="totalPayrollExpenses" placeholder="$0.00">
+                                <span class="help-text">Wages, salaries, benefits paid to employees</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Payroll Tax Forms Filed (Check all that apply)</label>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                                <label style="font-weight: normal; display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" name="payrollForms" value="941">
+                                    Form 941 (Quarterly Federal Tax Return)
+                                </label>
+                                <label style="font-weight: normal; display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" name="payrollForms" value="940">
+                                    Form 940 (Federal Unemployment Tax)
+                                </label>
+                                <label style="font-weight: normal; display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" name="payrollForms" value="w2">
+                                    Form W-2/W-3 (Wage Statements)
+                                </label>
+                                <label style="font-weight: normal; display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" name="payrollForms" value="1099">
+                                    Form 1099-NEC (Contractor Payments)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Information -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">
+                            <i class="fas fa-info-circle"></i>
+                            Additional Information
+                        </h2>
+                        
+                        <div class="form-group">
+                            <label for="industryType">Industry Type</label>
+                            <select id="industryType" name="industryType">
+                                <option value="">Select industry</option>
+                                <option value="retail">Retail</option>
+                                <option value="services">Services</option>
+                                <option value="manufacturing">Manufacturing</option>
+                                <option value="construction">Construction</option>
+                                <option value="technology">Technology</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="real_estate">Real Estate</option>
+                                <option value="restaurant">Restaurant/Food Service</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="additionalNotes">Additional Notes or Information</label>
+                            <textarea id="additionalNotes" name="additionalNotes" rows="4" placeholder="Any additional information that may be relevant to your tax filing..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-button" id="submitButton">
+                        <i class="fas fa-check"></i>
+                        Submit Business Information
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="business-questionnaire.js"></script>
+</body>
+</html>
+

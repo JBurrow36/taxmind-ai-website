@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Documents - TaxMind AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .upload-page {
+            min-height: 100vh;
+            background: #f8fafc;
+            padding-top: 80px;
+        }
+        
+        .upload-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 20px;
+        }
+        
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-description {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+        
+        .upload-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        .upload-main {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .upload-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .upload-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        
+        .drag-drop-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: #f9fafb;
+        }
+        
+        .drag-drop-area.dragover {
+            border-color: #2563eb;
+            background: #f0f9ff;
+        }
+        
+        .drag-drop-icon {
+            font-size: 3rem;
+            color: #9ca3af;
+            margin-bottom: 1rem;
+        }
+        
+        .drag-drop-text {
+            font-size: 1.1rem;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        .drag-drop-hint {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .upload-button {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-button:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+            transform: translateY(-2px);
+        }
+        
+        .document-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .doc-type-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .doc-type-card:hover {
+            border-color: #2563eb;
+            background: #f0f9ff;
+        }
+        
+        .doc-type-icon {
+            font-size: 2rem;
+            color: #2563eb;
+            margin-bottom: 0.5rem;
+        }
+        
+        .doc-type-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        
+        .doc-type-desc {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        
+        .uploaded-files {
+            margin-top: 2rem;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            background: #dbeafe;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 1.2rem;
+        }
+        
+        .file-info {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        
+        .file-size {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        
+        .file-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .status-uploading {
+            color: #f59e0b;
+        }
+        
+        .status-completed {
+            color: #10b981;
+        }
+        
+        .status-error {
+            color: #ef4444;
+        }
+        
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            background: transparent;
+            border: 1px solid #d1d5db;
+            color: #64748b;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: #f3f4f6;
+            border-color: #9ca3af;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #2563eb;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .upload-summary {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .summary-title {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+        
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        
+        .summary-stat {
+            text-align: center;
+        }
+        
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e40af;
+        }
+        
+        .summary-label {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        
+        .quick-actions {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .quick-action-btn {
+            background: white;
+            border: 2px solid #e5e7eb;
+            padding: 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #374151;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .quick-action-btn:hover {
+            border-color: #2563eb;
+            background: #f0f9ff;
+        }
+        
+        .action-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #2563eb;
+        }
+        
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .action-desc {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        
+        .tips-section {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .tips-title {
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 1rem;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tip-icon {
+            color: #f59e0b;
+            margin-top: 0.25rem;
+        }
+        
+        .tip-text {
+            color: #92400e;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .document-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>TaxMind AI</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="upload-documents.html" class="active">Upload</a></li>
+                <li><a href="ai-analysis.html">Analysis</a></li>
+                <li><a href="document-highlights.html">Document Highlights</a></li>
+                <li><a href="view-report.html">Report</a></li>
+                <li><a href="file-taxes.html">File</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Upload Page Content -->
+    <div class="upload-page">
+        <div class="upload-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Upload Tax Documents</h1>
+                <p class="page-description">Upload your tax documents and let our AI analyze them for maximum deductions and accurate filing.</p>
+            </div>
+
+            <!-- Main Upload Grid -->
+            <div class="upload-grid">
+                <!-- Main Upload Area -->
+                <div class="upload-main">
+                    <!-- Drag & Drop Upload -->
+                    <div class="upload-card">
+                        <h3 class="card-title">Upload Documents</h3>
+                        <div class="drag-drop-area" id="dragDropArea">
+                            <div class="drag-drop-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="drag-drop-text">Drag and drop your files here</div>
+                            <div class="drag-drop-hint">Supports PDF, JPG, PNG, GIF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, CSV, RTF, ZIP and more</div>
+                            <button class="upload-button" onclick="document.getElementById('fileInput').click()">
+                                Choose Files
+                            </button>
+                            <button class="upload-button" onclick="testUpload()" style="background: #10b981; margin-left: 10px;">
+                                Test Upload
+                            </button>
+                            <button class="upload-button" onclick="debugPageState()" style="background: #f59e0b; margin-left: 10px;">
+                                Debug Info
+                            </button>
+                        </div>
+                        <input type="file" id="fileInput" class="file-input" multiple accept=".pdf,.jpg,.jpeg,.png,.gif,.bmp,.tiff,.webp,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.rtf,.zip,.rar,.7z,.json,.xml,.html">
+                        
+                        <!-- Fallback upload method -->
+                        <div style="margin-top: 1rem; padding: 1rem; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <h4 style="margin-bottom: 0.5rem; color: #374151;">Alternative Upload Method</h4>
+                            <p style="margin-bottom: 1rem; color: #64748b; font-size: 0.9rem;">If drag & drop isn't working, use the file input below:</p>
+                            <input type="file" id="fallbackInput" multiple accept=".pdf,.jpg,.jpeg,.png,.gif,.bmp,.tiff,.webp,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.rtf,.zip,.rar,.7z,.json,.xml,.html" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;">
+                        </div>
+                    </div>
+
+                    <!-- Document Types -->
+                    <div class="upload-card">
+                        <h3 class="card-title">Common Document Types</h3>
+                        <div class="document-types">
+                            <div class="doc-type-card" onclick="selectDocumentType('w2')">
+                                <div class="doc-type-icon">
+                                    <i class="fas fa-file-invoice"></i>
+                                </div>
+                                <div class="doc-type-title">W-2 Forms</div>
+                                <div class="doc-type-desc">Employment income</div>
+                            </div>
+                            <div class="doc-type-card" onclick="selectDocumentType('1099')">
+                                <div class="doc-type-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="doc-type-title">1099 Forms</div>
+                                <div class="doc-type-desc">Contractor income</div>
+                            </div>
+                            <div class="doc-type-card" onclick="selectDocumentType('receipts')">
+                                <div class="doc-type-icon">
+                                    <i class="fas fa-receipt"></i>
+                                </div>
+                                <div class="doc-type-title">Receipts</div>
+                                <div class="doc-type-desc">Deduction receipts</div>
+                            </div>
+                            <div class="doc-type-card" onclick="selectDocumentType('bank')">
+                                <div class="doc-type-icon">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="doc-type-title">Bank Statements</div>
+                                <div class="doc-type-desc">Financial records</div>
+                            </div>
+                            <div class="doc-type-card" onclick="selectDocumentType('investment')">
+                                <div class="doc-type-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="doc-type-title">Investment Docs</div>
+                                <div class="doc-type-desc">Capital gains/losses</div>
+                            </div>
+                            <div class="doc-type-card" onclick="selectDocumentType('other')">
+                                <div class="doc-type-icon">
+                                    <i class="fas fa-file"></i>
+                                </div>
+                                <div class="doc-type-title">Other Documents</div>
+                                <div class="doc-type-desc">Miscellaneous files</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Uploaded Files -->
+                    <div class="upload-card">
+                        <h3 class="card-title">Uploaded Files</h3>
+                        <div class="uploaded-files" id="uploadedFiles">
+                            <div class="file-item">
+                                <div class="file-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <div class="file-info">
+                                    <div class="file-name">W-2_2023.pdf</div>
+                                    <div class="file-size">2.4 MB</div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="file-status status-completed">
+                                    <i class="fas fa-check-circle"></i>
+                                    Completed
+                                </div>
+                                <div class="file-actions">
+                                    <button class="action-btn" onclick="viewFile('w2_2023.pdf')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="deleteFile('w2_2023.pdf')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upload Summary -->
+                    <div class="upload-summary">
+                        <h4 class="summary-title">Upload Summary</h4>
+                        <div class="summary-stats">
+                            <div class="summary-stat">
+                                <div class="summary-value" id="totalFiles">1</div>
+                                <div class="summary-label">Files Uploaded</div>
+                            </div>
+                            <div class="summary-stat">
+                                <div class="summary-value" id="totalSize">2.4 MB</div>
+                                <div class="summary-label">Total Size</div>
+                            </div>
+                            <div class="summary-stat">
+                                <div class="summary-value" id="processedFiles">1</div>
+                                <div class="summary-label">Processed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="upload-sidebar">
+                    <!-- Quick Actions -->
+                    <div class="upload-card">
+                        <h3 class="card-title">Quick Actions</h3>
+                        <div class="quick-actions">
+                            <a href="ai-analysis.html" class="quick-action-btn">
+                                <div class="action-icon">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="action-title">Run AI Analysis</div>
+                                <div class="action-desc">Analyze uploaded documents</div>
+                            </a>
+                            <a href="document-highlights.html" class="quick-action-btn">
+                                <div class="action-icon">
+                                    <i class="fas fa-highlighter"></i>
+                                </div>
+                                <div class="action-title">Document Highlights</div>
+                                <div class="action-desc">View interactive highlights</div>
+                            </a>
+                            <a href="view-report.html" class="quick-action-btn">
+                                <div class="action-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="action-title">View Report</div>
+                                <div class="action-desc">See current tax summary</div>
+                            </a>
+                            <a href="file-taxes.html" class="quick-action-btn">
+                                <div class="action-icon">
+                                    <i class="fas fa-paper-plane"></i>
+                                </div>
+                                <div class="action-title">File Taxes</div>
+                                <div class="action-desc">Submit to IRS</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Upload Tips -->
+                    <div class="upload-card">
+                        <h3 class="card-title">Upload Tips</h3>
+                        <div class="tips-section">
+                            <h4 class="tips-title">Best Practices</h4>
+                            <div class="tip-item">
+                                <i class="fas fa-lightbulb tip-icon"></i>
+                                <div class="tip-text">Upload high-quality images (JPG, PNG, GIF), PDFs, Office docs, or text files</div>
+                            </div>
+                            <div class="tip-item">
+                                <i class="fas fa-lightbulb tip-icon"></i>
+                                <div class="tip-text">Ensure all text is readable and not cut off</div>
+                            </div>
+                            <div class="tip-item">
+                                <i class="fas fa-lightbulb tip-icon"></i>
+                                <div class="tip-text">Upload all relevant documents for complete analysis</div>
+                            </div>
+                            <div class="tip-item">
+                                <i class="fas fa-lightbulb tip-icon"></i>
+                                <div class="tip-text">Our AI can process up to 50 documents at once</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="tax-type-detector.js"></script>
+    <script src="document-analysis-guide.js"></script>
+    <script src="ai-training-system.js"></script>
+    <!-- PDF.js for document parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- Tesseract.js for OCR -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="document-parser.js"></script>
+    <script src="upload-documents.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Qualification - TaxMind AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .qualification-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .qualification-container {
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .qualification-card {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .qualification-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .qualification-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .qualification-header p {
+            color: #64748b;
+            font-size: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .form-group input.error,
+        .form-group select.error {
+            border-color: #ef4444;
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        .form-group input.error + .error-message,
+        .form-group select.error + .error-message {
+            display: block;
+        }
+        
+        .help-text {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+        
+        .qualification-result {
+            display: none;
+            background: #f0f9ff;
+            border: 2px solid #2563eb;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .qualification-result.active {
+            display: block;
+        }
+        
+        .qualification-result h3 {
+            color: #1e40af;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .qualification-result p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+        
+        .recommended-plan {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin: 1rem 0;
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .submit-button:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+        
+        .continue-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        
+        .continue-button:hover {
+            background: linear-gradient(135deg, #047857, #065f46);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="qualification-page">
+        <div class="qualification-container">
+            <div class="qualification-card">
+                <div class="qualification-header">
+                    <h1>Plan Qualification</h1>
+                    <p>Tell us about your business to find the right plan</p>
+                </div>
+                
+                <form id="qualificationForm">
+                    <div class="form-group">
+                        <label for="companyName">Company Name *</label>
+                        <input type="text" id="companyName" name="companyName" required placeholder="Enter your company name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="companyRevenue">Annual Company Revenue *</label>
+                        <input type="text" id="companyRevenue" name="companyRevenue" required placeholder="$0.00">
+                        <span class="help-text">Total annual revenue/sales for your business</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="numberOfEmployees">Number of Employees *</label>
+                        <input type="number" id="numberOfEmployees" name="numberOfEmployees" required min="0" placeholder="0">
+                        <span class="help-text">Include all full-time and part-time employees</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="businessStructure">Business Structure *</label>
+                        <select id="businessStructure" name="businessStructure" required>
+                            <option value="">Select business structure</option>
+                            <option value="sole_proprietorship">Sole Proprietorship</option>
+                            <option value="partnership">Partnership</option>
+                            <option value="llc">LLC (Limited Liability Company)</option>
+                            <option value="s_corp">S-Corporation</option>
+                            <option value="c_corp">C-Corporation</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="industryType">Industry Type</label>
+                        <select id="industryType" name="industryType">
+                            <option value="">Select industry (optional)</option>
+                            <option value="retail">Retail</option>
+                            <option value="services">Services</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="construction">Construction</option>
+                            <option value="technology">Technology</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="real_estate">Real Estate</option>
+                            <option value="restaurant">Restaurant/Food Service</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactEmail">Contact Email *</label>
+                        <input type="email" id="contactEmail" name="contactEmail" required placeholder="your@email.com">
+                        <span class="help-text">We'll use this to contact you about your plan</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ein">EIN (Optional)</label>
+                        <input type="text" id="ein" name="ein" placeholder="XX-XXXXXXX" maxlength="10">
+                        <span class="help-text">Employer Identification Number (if you have one)</span>
+                    </div>
+                    
+                    <div class="qualification-result" id="qualificationResult">
+                        <h3>Recommended Plan</h3>
+                        <div class="recommended-plan" id="recommendedPlan"></div>
+                        <p id="planDescription"></p>
+                        <a href="#" id="continueButton" class="continue-button">
+                            <i class="fas fa-arrow-right"></i>
+                            Continue with Recommended Plan
+                        </a>
+                    </div>
+                    
+                    <button type="submit" class="submit-button" id="submitButton">
+                        <i class="fas fa-check"></i>
+                        Check Qualification
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="plan-qualification.js"></script>
+</body>
+</html>
+

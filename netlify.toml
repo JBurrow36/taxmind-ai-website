@@ -1,0 +1,113 @@
+# Netlify Configuration for TaxMind AI
+# This file configures security, performance, and traffic handling
+
+[build]
+  publish = "."
+
+# Security and Performance Settings
+[build.environment]
+  NODE_VERSION = "18"
+
+# Redirects - Force HTTPS and handle redirects
+[[redirects]]
+  from = "http://*"
+  to = "https://:splat"
+  status = 301
+  force = true
+
+# Headers configuration (alternative to _headers file)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security Headers
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    
+    # HTTPS Enforcement (HSTS)
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    
+    # Content Security Policy - Strict security without unsafe-eval
+    # Note: unsafe-inline is required for inline styles in some HTML, but unsafe-eval is removed
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-inline'
+        https://cdn.jsdelivr.net 
+        https://cdnjs.cloudflare.com 
+        https://www.googletagmanager.com 
+        https://www.google-analytics.com 
+        https://fonts.googleapis.com
+        https://*.googleapis.com;
+      style-src 'self' 'unsafe-inline' 
+        https://fonts.googleapis.com 
+        https://cdnjs.cloudflare.com;
+      font-src 'self' 
+        https://fonts.gstatic.com 
+        https://cdnjs.cloudflare.com 
+        data:;
+      img-src 'self' data: https: blob:;
+      connect-src 'self' 
+        https://api.emailjs.com 
+        https://www.google-analytics.com 
+        https://www.googletagmanager.com
+        https://*.googleapis.com
+        https://*.google.com;
+      frame-src 'self' https://www.youtube.com;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      frame-ancestors 'none';
+      upgrade-insecure-requests;
+      block-all-mixed-content;
+    """
+
+# HTML files - no caching for dynamic content
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Static assets - long cache
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# JavaScript and CSS - long cache
+[[headers]]
+  for = "/*.{js,css}"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Netlify Security Settings
+[context.production]
+  # Enable DDoS protection and rate limiting (handled by Netlify automatically)
+  
+# Rate Limiting (via Netlify Functions if needed)
+# Note: Netlify automatically provides DDoS protection and rate limiting
+# For custom rate limiting, you would need to implement Netlify Functions
+
+# Performance optimizations
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
+
+
+
+
+

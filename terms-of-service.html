@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Security Meta Tags -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    
+    <!-- Performance and Security: Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    
+    <title>Terms of Service - TaxMind AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .terms-page {
+            min-height: 100vh;
+            background: #f8fafc;
+            padding: 80px 20px 40px;
+        }
+        
+        .terms-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .terms-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .terms-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 1rem;
+        }
+        
+        .terms-logo i {
+            margin-right: 0.5rem;
+            font-size: 2.2rem;
+        }
+        
+        .terms-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .last-updated {
+            color: #64748b;
+            font-size: 1rem;
+        }
+        
+        .terms-content {
+            line-height: 1.8;
+            color: #374151;
+        }
+        
+        .terms-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .terms-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .terms-content ul {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .terms-content li {
+            margin-bottom: 0.75rem;
+            padding-left: 0.5rem;
+        }
+        
+        .highlight-box {
+            background: #f0f9ff;
+            border-left: 4px solid #2563eb;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+        
+        .contact-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 2rem;
+            transition: color 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: #1d4ed8;
+        }
+        
+        /* Legal Terms Section Styles */
+        .legal-terms-intro {
+            background: #f8fafc;
+            border-left: 4px solid #2563eb;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+        
+        .legal-terms-intro p {
+            margin-bottom: 0.75rem;
+        }
+        
+        .legal-terms-intro p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .legal-terms-stats {
+            color: #64748b;
+            font-size: 0.9em;
+        }
+        
+        .legal-terms-section {
+            margin: 2.5rem 0;
+            padding: 1.5rem 0;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .legal-terms-section:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+        
+        .legal-terms-section h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .legal-terms-list {
+            list-style: none;
+            margin-left: 0;
+            padding: 0;
+        }
+        
+        .legal-term-item {
+            background: #f8fafc;
+            border-left: 4px solid #2563eb;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+            transition: background 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .legal-term-item:hover {
+            background: #f1f5f9;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+        }
+        
+        .legal-term-content {
+            line-height: 1.7;
+        }
+        
+        .legal-term-text {
+            color: #1e293b;
+            font-size: 1.05em;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .legal-term-context {
+            color: #64748b;
+            font-style: italic;
+            font-size: 0.95em;
+            margin: 0.75rem 0;
+            line-height: 1.6;
+        }
+        
+        .legal-term-source {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.85em;
+            margin-top: 0.5rem;
+        }
+        
+        .legal-terms-definitions {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .legal-term-definition-term {
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.05em;
+        }
+        
+        .legal-term-definition-term:first-child {
+            margin-top: 0;
+        }
+        
+        .legal-term-definition-desc {
+            color: #64748b;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        
+        .legal-term-source-container {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .legal-terms-error {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        
+        .legal-terms-error p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .legal-terms-error p:last-child {
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .terms-container {
+                padding: 2rem;
+            }
+            
+            .terms-header h1 {
+                font-size: 2rem;
+            }
+            
+            .legal-terms-section h3 {
+                font-size: 1.15rem;
+            }
+            
+            .legal-term-item {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>TaxMind AI</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#features">Features</a></li>
+                <li><a href="index.html#pricing">Pricing</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Terms Page Content -->
+    <section class="terms-page">
+        <div class="terms-container">
+            <div class="terms-header">
+                <div class="terms-logo">
+                    <i class="fas fa-brain"></i>
+                    <span>TaxMind AI</span>
+                </div>
+                <h1>Terms of Service</h1>
+                <p class="last-updated">Last updated: October 27, 2025</p>
+            </div>
+
+            <div class="terms-content">
+                <p>Welcome to TaxMind AI ("we," "our," or "us"). These Terms of Service ("Terms") govern your use of our website, platform, mobile application, and all related services (collectively, the "Service"). By accessing or using TaxMind AI, you agree to these Terms. If you do not agree, please do not use our Service.</p>
+
+                <h2>1. Overview</h2>
+                <p>TaxMind AI provides AI-powered tools for tax preparation, document analysis, and financial insights. Our platform uses artificial intelligence and document recognition to help users organize, understand, and plan their taxes. We are not a certified accounting firm, tax attorney, or licensed tax preparer, and our services are for informational and educational purposes only.</p>
+
+                <h2>2. Eligibility</h2>
+                <p>You must be at least 18 years old to use TaxMind AI. By using our Service, you represent that you meet this requirement and that all information you provide is accurate and truthful.</p>
+
+                <h2>3. User Accounts</h2>
+                <p>To use certain features, you may need to create an account. You are responsible for:</p>
+                <ul>
+                    <li>Maintaining the confidentiality of your login credentials.</li>
+                    <li>Ensuring all information you provide is accurate and up to date.</li>
+                    <li>Immediately notifying us of any unauthorized use of your account.</li>
+                </ul>
+                <p>We reserve the right to suspend or terminate accounts that violate these Terms.</p>
+
+                <h2>4. Personal Data and Financial Documents</h2>
+                <p>By uploading tax or financial documents, you grant TaxMind AI permission to process, analyze, and store them securely for the purpose of providing our AI analysis and recommendations.</p>
+                <p>We handle your data according to our Privacy Policy, which describes how your information is collected, used, and protected.</p>
+                <p>You retain ownership of your uploaded documents and personal data, but you grant us a limited license to use that data solely for providing the Service.</p>
+
+                <h2>5. Plans and Payments</h2>
+                <p>TaxMind AI offers three subscription tiers:</p>
+                <ul>
+                    <li>Individual Plan – $29/year</li>
+                    <li>Small Business Plan – $79/year (for ≤100 employees)</li>
+                    <li>Enterprise Plan – $199/year (for >100 employees)</li>
+                </ul>
+                <p>All payments are billed annually unless otherwise stated.</p>
+                <p>By purchasing a plan, you authorize us (or our payment processor) to charge your payment method on a recurring basis.</p>
+                <p>All fees are non-refundable unless required by law.</p>
+
+                <h2>6. No Professional or Legal Advice</h2>
+                <div class="highlight-box">
+                    <p><strong>Important:</strong> All outputs, insights, and recommendations generated by TaxMind AI are for informational and educational purposes only.</p>
+                    <p>They do not constitute legal, tax, accounting, or financial advice.</p>
+                    <p>You should consult with a certified tax professional or legal advisor before making any decisions based on the information provided by our Service.</p>
+                </div>
+
+                <h2>7. Acceptable Use</h2>
+                <p>You agree not to:</p>
+                <ul>
+                    <li>Use the Service for unlawful, misleading, or fraudulent purposes.</li>
+                    <li>Upload false, incomplete, or misleading financial information.</li>
+                    <li>Interfere with or disrupt our systems or servers.</li>
+                    <li>Copy, modify, or resell our software without permission.</li>
+                </ul>
+                <p>Violation of these terms may result in suspension or termination of your account.</p>
+
+                <h2>8. Intellectual Property</h2>
+                <p>All content, software, designs, and technology on TaxMind AI are owned by or licensed to us.</p>
+                <p>You may use the Service only for your personal or business tax-related purposes as permitted by these Terms.</p>
+
+                <h2>9. Limitation of Liability</h2>
+                <p>To the fullest extent permitted by law, TaxMind AI and its owners, employees, and affiliates shall not be liable for any direct, indirect, incidental, or consequential damages arising from:</p>
+                <ul>
+                    <li>Your use of or inability to use the Service,</li>
+                    <li>Errors in AI-generated data, or</li>
+                    <li>Unauthorized access to your information.</li>
+                </ul>
+                <p>Our total liability shall not exceed the total amount you paid to us in the 12 months preceding the claim.</p>
+
+                <h2>10. Termination</h2>
+                <p>You may stop using our Service at any time.</p>
+                <p>We may suspend or terminate your account if we reasonably believe you have violated these Terms or used the platform inappropriately.</p>
+
+                <h2>11. Governing Law</h2>
+                <p>These Terms shall be governed by and construed in accordance with the laws of the State of Washington, USA, without regard to its conflict of law principles.</p>
+
+                <h2>12. Changes to Terms</h2>
+                <p>We may update these Terms periodically. Any changes will be posted on this page with a new "Last updated" date. Continued use of the Service after changes means you accept the new Terms.</p>
+
+                <h2>13. Contact Us</h2>
+                <div class="contact-box">
+                    <p><strong>For questions about these Terms, please contact us at:</strong></p>
+                    <p><a href="mailto:tax-mind@outlook.com" style="color: #1e293b; font-weight: 600;">tax-mind@outlook.com</a></p>
+                </div>
+
+                <!-- Legal Terms and Compliance Section -->
+                <h2>14. Legal Terms and Compliance Information</h2>
+                <div id="legal-terms-container">
+                    <p style="text-align: center; color: #64748b;"><i class="fas fa-spinner fa-spin"></i> Loading legal terms and compliance information...</p>
+                </div>
+
+                <a href="index.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script src="legal-terms-loader.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
